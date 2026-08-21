@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Main"
+  short_description: "Switch selected repositories to their main branch"
+  default_prompt: "Use $gitmain to switch the repository or repositories here to their main branch."
