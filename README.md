@@ -1,17 +1,35 @@
 # claude-skills
 
-Custom slash commands and tooling for [Claude Code](https://claude.ai/code). Drop the
-commands into `~/.claude/commands/` (global) or `.claude/commands/` (per-project) and
-invoke with `/<name>`.
+Custom slash commands, skills, and tooling for [Claude Code](https://claude.ai/code).
+
+- **Commands** (`commands/`) are invoked explicitly as `/<name>`.
+- **Skills** (`skills/`) are invoked by name *or* picked up automatically when the
+  model decides their description matches the task.
+- **Global instructions** (`global/CLAUDE.md`) apply to every project.
+
+Each lives in a different place under `~/.claude/` — see Install.
 
 ## Install
 
 ```bash
 git clone git@github.com:quniv/claude-skills.git
+mkdir -p ~/.claude/commands ~/.claude/skills
+
+# Commands -> /<name>
 ln -s "$(pwd)/claude-skills/commands/"*.md ~/.claude/commands/
+
+# Skills -> one directory each, symlink the directory, not the SKILL.md,
+# so bundled templates and agent manifests come along.
+ln -s "$(pwd)/claude-skills/skills/"*/ ~/.claude/skills/
+
+# Global instructions — back up any existing file first, `ln -s` refuses to
+# clobber it. Add -f once you are sure you want to replace it.
+ln -s "$(pwd)/claude-skills/global/CLAUDE.md" ~/.claude/CLAUDE.md
 ```
 
-Or symlink individual files if you only want some of them.
+`ln -s` fails rather than overwrites when the destination already exists, so a
+partial install is safe to re-run once you have moved the conflicting file out
+of the way. Symlink individual entries if you only want some of them.
 
 ### Status line
 
@@ -34,7 +52,7 @@ Then point `statusLine` in `~/.claude/settings.json` at it:
 }
 ```
 
-## Skills
+## Commands
 
 | Command | Purpose |
 |---|---|
@@ -44,8 +62,28 @@ Then point `statusLine` in `~/.claude/settings.json` at it:
 | `/hey` | Read-only project pulse check — git status, open PRs/issues, worktrees — with a suggested next step if something needs attention. |
 | `/pr` | End-to-end PR workflow — creates the PR, then loops through conflicts, failing checks, and review comments until it's mergeable. |
 
+## Skills
+
+Skills carry their own trigger description, so Claude can invoke them on its own
+when the task matches — no slash command required.
+
+| Skill | Purpose |
+|---|---|
+| `gitmain` | Returns the repositories under the current directory to `main`, asking what to do with uncommitted work in each one before switching. |
+| `savework` | Writes a short session recap to `.history/` in the project root, so the next session gets oriented without re-deriving context. Bundles the `.history/CLAUDE.md` template it installs. |
+
+`savework` is most useful paired with the `global/CLAUDE.md` rule that tells
+Claude to run it unprompted after something lands.
+
+## Global instructions
+
+`global/CLAUDE.md` is the always-on preamble for every project: prefer diagrams
+over prose, keep writing plain, and recap finished work to `.history/`. Symlink
+it to `~/.claude/CLAUDE.md`. Per-project `CLAUDE.md` files stack on top of it
+rather than replacing it.
+
 ## Notes
 
-- Each skill is a self-contained Markdown file — read it before using it, they're not black boxes.
+- Each command and skill is plain Markdown — read it before using it, they're not black boxes.
 - Several skills (`/pr`, `/fix`, `/feat`) assume the `gh` CLI is authenticated and lean on `AskUserQuestion`-style confirmation before anything destructive (pushes, commits, conflict resolution).
 - These were written for a specific workflow (zsh, git, GitHub) — adjust freely for yours.
