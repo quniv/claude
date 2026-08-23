@@ -1,0 +1,2 @@
+2026-08-23 07:40
+Added a [Model·effort] segment to statusline/statusline.sh, between git info and context %. Reads model.display_name and effort.level from the status line JSON (effort is absent for models without the effort param, so the segment degrades to [Model]). ~/.claude/statusline.sh is a symlink into this repo, so the change is live without reinstall. README updated. Not committed yet. Note: ~/.claude/CLAUDE.md is a separate regular file, not the repo global/CLAUDE.md — deliberately left unlinked.

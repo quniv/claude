@@ -1,6 +1,6 @@
 #!/bin/bash
 # Claude Code Status Line — robbyrussell theme style
-# Displays: ➜  <dir> git:(branch) ✗  [ctx%]  [5h%]  session-context
+# Displays: ➜  <dir> git:(branch) ✗  [model·effort]  [ctx%]  [5h%]  session-context
 
 # ANSI color codes using $'...' syntax for proper interpretation
 RST=$'\e[0m'
@@ -32,6 +32,19 @@ if git rev-parse --git-dir > /dev/null 2>&1; then
     git_part=" ${BOLD_BLUE}git:(${RED}${branch}${BOLD_BLUE})${RST}${dirty_marker}"
 else
     git_part=""
+fi
+
+# Model + reasoning effort — effort.level is absent when the model doesn't support it
+model=$(echo "$input" | jq -r ".model.display_name // empty")
+effort=$(echo "$input" | jq -r ".effort.level // empty")
+if [ -n "$model" ]; then
+    effort_part=""
+    if [ -n "$effort" ]; then
+        effort_part="${GRAY}·${BOLD_CYAN}${effort}"
+    fi
+    model_display=" ${GRAY}[${LIGHT_MAGENTA}${model}${effort_part}${GRAY}]${RST}"
+else
+    model_display=""
 fi
 
 # Context window usage
@@ -76,11 +89,12 @@ else
     arrow="${BOLD_GREEN}➜${RST}"
 fi
 
-# Output: ➜  dir git:(branch) ✗  [ctx%]  [5h%]  session-context
-printf "%s  %s%s%s%s%s\n" \
+# Output: ➜  dir git:(branch) ✗  [model·effort]  [ctx%]  [5h%]  session-context
+printf "%s  %s%s%s%s%s%s\n" \
     "$arrow" \
     "${CYAN}${dir_name}${RST}" \
     "$git_part" \
+    "$model_display" \
     "$ctx_display" \
     "$five_display" \
     "$context_display"
