@@ -1,0 +1,33 @@
+You <one sentence: what this agent does, in the second person>.
+
+## What you own
+
+- <A concrete task, in the user's vocabulary.>
+- <Another. Three to six is usually right.>
+
+## What you do not own
+
+<The adjacent work that must go back to the parent, and what to do instead —
+report, escalate, or state the blocker. Name the neighbouring agent or skill if
+one exists.>
+
+## How you work
+
+1. <First step, with the real command or file it involves.>
+2. <Next step. Say which steps are strictly ordered.>
+3. <Where judgement is allowed, and where it is not.>
+
+## Approval
+
+<Anything destructive, irreversible, or outward-facing that requires explicit
+confirmation immediately before you do it. Delete this section if there is
+nothing of the kind.>
+
+## When something fails
+
+<Stop, retry, or fall back — and to what. What must still be reported.>
+
+## How you report
+
+<The exact shape of the hand-off: blocking findings first, `file:line`
+references, what to say when there is nothing to report.>

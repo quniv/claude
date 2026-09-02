@@ -87,11 +87,50 @@ when the task matches — no slash command required.
 
 | Skill | Purpose |
 |---|---|
+| `create-skill` | Builds a skill and installs it into every coding agent's own standard directory. |
+| `create-agent` | Builds a subagent and renders it natively for every coding agent. |
 | `gitmain` | Returns the repositories under the current directory to `main`, asking what to do with uncommitted work in each one before switching. |
 | `savework` | Writes a short session recap to `.history/` in the project root, so the next session gets oriented without re-deriving context. Bundles the `.history/CLAUDE.md` template it installs. |
 
 `savework` is most useful paired with the `global/CLAUDE.md` rule that tells
 Claude to run it unprompted after something lands.
+
+### create-skill / create-agent
+
+These two are cross-agent: they generate skills and subagents for **any** coding
+agent, writing into the directory each tool actually scans rather than a bespoke
+one. Both take a single authored body and render a complete, self-contained
+definition per target — no symlinks, no adapter files pointing at a canonical
+copy that a moved or cloned repo would break.
+
+| | Claude Code | Codex CLI |
+|---|---|---|
+| Skill, project | `.claude/skills/<name>/` | `.codex/skills/<name>/` |
+| Skill, user | `~/.claude/skills/<name>/` | `$CODEX_HOME/skills/<name>/` |
+| Agent, project | `.claude/agents/<name>.md` | `.codex/agents/<name>.toml` |
+| Agent, user | `~/.claude/agents/<name>.md` | `$CODEX_HOME/agents/<name>.toml` |
+
+Each bundles one stdlib-only Python helper — no `pip`, no `uv`, no install step,
+so any agent on any machine can run it:
+
+```bash
+# Where would this land?
+python3 skills/create-skill/scripts/skill_tool.py paths --name my-skill
+
+# Write it everywhere at once
+python3 skills/create-skill/scripts/skill_tool.py scaffold \
+  --name my-skill --description '...' --body-file body.md --scope project
+
+# Check it
+python3 skills/create-skill/scripts/skill_tool.py validate --name my-skill
+```
+
+`agent_tool.py` in `create-agent` takes the same three subcommands. Both refuse
+to overwrite without `--force`, refuse to write through a symlink even with it,
+and reject names that are not lowercase hyphen-case.
+
+To support another coding agent, add its paths to `scripts/agent_targets.py` and
+its format to the renderer — the workflow around it does not change.
 
 ## Global instructions
 
