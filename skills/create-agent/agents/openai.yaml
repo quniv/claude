@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Agent"
+  short_description: "Build a subagent for any coding agent"
+  default_prompt: "Use $create-agent to define a specialized role for Claude Code and Codex."
