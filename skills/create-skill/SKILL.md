@@ -29,6 +29,19 @@ silently breaks every dependent target.
 Read [references/targets.md](references/targets.md) for the per-tool format
 differences and the evidence behind these paths.
 
+## Running the helper
+
+Every command below is written as `<skill-dir>/scripts/...`. `<skill-dir>` is the
+directory holding the `SKILL.md` you are reading right now — resolve it before
+the first command and reuse it, because a skill is often reached through a
+symlink and a relative guess will miss:
+
+```bash
+skill_dir=$(dirname "$(readlink -f ~/.claude/skills/create-skill/SKILL.md)")
+```
+
+Substitute the path the tool actually loaded this skill from.
+
 ## Workflow
 
 ### 1. Establish scope and safety
@@ -116,6 +129,7 @@ python3 <skill-dir>/scripts/skill_tool.py scaffold \
   --scope <scope> \
   --tool claude --tool codex \
   --resources references,scripts \
+  --copy-from <scratch>/staged \
   --display-name '<Title Case Name>' \
   --short-description '<25-64 characters>' \
   --default-prompt 'Use /<name> to <representative request>.'
@@ -127,7 +141,12 @@ python3 <skill-dir>/scripts/skill_tool.py scaffold \
   Claude targets automatically.
 - Write the body as imperative instructions to the agent, in the second person.
   No README, no changelog, no install guide, no version history inside a skill.
-- Populate every resource directory you asked for, in every target.
+- **Fill resource directories before scaffolding, not after.** Stage them under
+  one scratch directory (`<scratch>/staged/references/`, `.../scripts/`) and pass
+  `--copy-from <scratch>/staged`; the contents land in every target in one pass.
+  Build artefacts (`__pycache__`, `.git`) are excluded automatically.
+  Without `--copy-from` you get empty directories, which `validate` rejects — so
+  either stage the content or drop the directory from `--resources`.
 
 ### 7. Validate, and prove it triggers
 

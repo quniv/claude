@@ -65,3 +65,19 @@ that say "read that file first." It does not work:
 
 Render the whole role into every target. Sharing happens at authoring time,
 through one `--body-file`, not at run time through a pointer.
+
+## `agent_targets.py` is duplicated on purpose
+
+Each skill carries its own byte-identical copy of `scripts/agent_targets.py`.
+That is deliberate: a skill must keep working when it is the only one installed,
+and neither tool resolves imports across skill directories.
+
+Nothing keeps the copies in sync automatically. **When you change one, change
+both**, and confirm with:
+
+```bash
+diff skills/create-skill/scripts/agent_targets.py \
+     skills/create-agent/scripts/agent_targets.py
+```
+
+Adding support for another coding agent means editing this file in both places.

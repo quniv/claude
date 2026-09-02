@@ -62,3 +62,19 @@ Each target is cheap — a skill is text. Write a real one per target and let ea
 tool own its copy. When the user genuinely wants one source of truth, that
 belongs in a dotfiles repository they symlink deliberately, not in output this
 skill generates behind their back.
+
+## `agent_targets.py` is duplicated on purpose
+
+Each skill carries its own byte-identical copy of `scripts/agent_targets.py`.
+That is deliberate: a skill must keep working when it is the only one installed,
+and neither tool resolves imports across skill directories.
+
+Nothing keeps the copies in sync automatically. **When you change one, change
+both**, and confirm with:
+
+```bash
+diff skills/create-skill/scripts/agent_targets.py \
+     skills/create-agent/scripts/agent_targets.py
+```
+
+Adding support for another coding agent means editing this file in both places.

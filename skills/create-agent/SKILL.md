@@ -30,6 +30,19 @@ it. A Claude Code subagent has no mechanism to go read an external file, so such
 an adapter produces an agent whose instructions are one sentence long and whose
 real role never loads. Read [references/targets.md](references/targets.md).
 
+## Running the helper
+
+Every command below is written as `<skill-dir>/scripts/...`. `<skill-dir>` is the
+directory holding the `SKILL.md` you are reading right now — resolve it before
+the first command and reuse it, because a skill is often reached through a
+symlink and a relative guess will miss:
+
+```bash
+skill_dir=$(dirname "$(readlink -f ~/.claude/skills/create-agent/SKILL.md)")
+```
+
+Substitute the path the tool actually loaded this skill from.
+
 ## Workflow
 
 ### 1. Establish scope and safety
