@@ -71,8 +71,8 @@ harmless when the tool is missing — the alias just fails on use.
 
 - **Nothing secret is committed.** `GITHUB_PERSONAL_ACCESS_TOKEN` is resolved at
   shell startup from `gh auth token`; there are no literal credentials in these
-  files. A legacy `~/.config/fish/` setup exists on the machine and is **not**
-  included — zsh is the login shell, and fish's `fish_variables` can hold tokens.
+  files. An older fish + kitty setup was removed from the machine and is **not**
+  part of this share.
 - **Paths are absolute** (`/home/qitpydev/...`) in a few `.zshrc` spots — nvm,
   pipx, tfswitch, bun. Search-and-replace for your own `$HOME` after cloning.
 - The setup assumes **Fedora Linux**; the Starship `[os.symbols]` block covers
