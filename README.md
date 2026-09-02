@@ -6,6 +6,8 @@ Custom slash commands, skills, and tooling for [Claude Code](https://claude.ai/c
 - **Skills** (`skills/`) are invoked by name *or* picked up automatically when the
   model decides their description matches the task.
 - **Global instructions** (`global/CLAUDE.md`) apply to every project.
+- **Terminal setup** (`terminal/`) is the Ghostty + zsh + Starship environment
+  this all runs in — see [`terminal/README.md`](terminal/README.md).
 
 Each lives in a different place under `~/.claude/` — see Install.
 
@@ -50,6 +52,22 @@ Then point `statusLine` in `~/.claude/settings.json` at it:
     "command": "~/.claude/statusline.sh"
   }
 }
+```
+
+### Terminal setup
+
+`terminal/` holds the shell and terminal environment itself — Ghostty, zsh
+(oh-my-zsh), and a Starship prompt on a shared cyberpunk-neon palette. These
+land outside `~/.claude/`, and they have prerequisites; read
+[`terminal/README.md`](terminal/README.md) before linking them.
+
+```bash
+mkdir -p ~/.config/ghostty
+
+ln -s "$(pwd)/claude-skills/terminal/zshrc"          ~/.zshrc
+ln -s "$(pwd)/claude-skills/terminal/zprofile"       ~/.zprofile
+ln -s "$(pwd)/claude-skills/terminal/starship.toml"  ~/.config/starship.toml
+ln -s "$(pwd)/claude-skills/terminal/ghostty/config" ~/.config/ghostty/config
 ```
 
 ## Commands

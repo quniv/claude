@@ -1,0 +1,156 @@
+# Starship Config - Cool Edition
+"$schema" = 'https://starship.rs/config-schema.json'
+
+scan_timeout = 10
+add_newline = true
+
+# Two-line prompt - CYBERPUNK NEON
+format = """
+[](fg:#ff00ff)$os$username[](bg:#00ffff fg:#ff00ff)$directory[](bg:#ffff00 fg:#00ffff)$git_branch$git_status[](bg:#ff00ff fg:#ffff00)$kubernetes[](fg:#ff00ff)
+$python$nodejs$rust$golang$java$docker_context$cmd_duration$character"""
+
+right_format = """$time"""
+
+palette = 'cyberpunk'
+
+[palettes.cyberpunk]
+neon_magenta = "#ff00ff"
+neon_cyan = "#00ffff"
+neon_yellow = "#ffff00"
+neon_red = "#ff0055"
+neon_green = "#00ff88"
+neon_orange = "#ff8800"
+neon_blue = "#0088ff"
+neon_purple = "#8800ff"
+dark_bg = "#0a0a0a"
+dark_surface = "#1a1a2e"
+light_text = "#e0e0e0"
+white = "#ffffff"
+
+[os]
+disabled = false
+style = "bg:#ff00ff fg:#0a0a0a bold"
+format = "[ $symbol ]($style)"
+
+[os.symbols]
+Fedora = "⌬"
+Ubuntu = "⌬"
+Debian = "⌬"
+Arch = "⌬"
+Macos = "⌬"
+Windows = "⌬"
+Linux = "⌬"
+
+[username]
+show_always = false
+style_user = "bg:#ff00ff fg:#0a0a0a"
+format = "[$user ]($style)"
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+style = "bg:#00ffff fg:#0a0a0a bold"
+format = "[ ◈ $path ]($style)"
+home_symbol = "~"
+read_only = " ⊗"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Projects" = "󰲋 "
+
+[git_branch]
+symbol = "⟁"
+style = "bg:#ffff00 fg:#0a0a0a"
+format = "[ $symbol $branch ]($style)"
+
+[git_status]
+style = "bg:#ffff00 fg:#0a0a0a"
+format = "[$all_status$ahead_behind]($style)"
+ahead = " ▲${count}"
+behind = " ▼${count}"
+diverged = " ◆"
+untracked = " ◌${count}"
+modified = " ◎${count}"
+staged = " ◉${count}"
+deleted = " ⊘${count}"
+conflicted = " ⚡${count}"
+stashed = " ▣"
+
+[kubernetes]
+symbol = "⎈"
+style = "bg:#ff00ff fg:#0a0a0a"
+format = "[ $symbol $context ]($style)"
+disabled = false
+
+[[kubernetes.contexts]]
+context_pattern = 'arn:aws:eks:.*:.*:cluster/(?P<cluster>.*)'
+context_alias = '$cluster'
+
+[character]
+success_symbol = "[ ▶ ](bold #00ffff)"
+error_symbol = "[ ✖ ](bold #ff0055)"
+vimcmd_symbol = "[ ◀ ](bold #ff00ff)"
+
+[time]
+disabled = false
+time_format = "%H:%M"
+style = "bold fg:#ff00ff"
+format = "[ ◷ $time ]($style)"
+
+[cmd_duration]
+min_time = 500
+format = "[ ⧖ $duration ](bold #ffff00)"
+
+[python]
+symbol = "⟐py"
+style = "#ffff00"
+format = "[$symbol $version( ⟁$virtualenv)]($style) "
+
+[nodejs]
+symbol = "⟐js"
+style = "#00ffff"
+format = "[$symbol $version]($style) "
+
+[rust]
+symbol = "⟐rs"
+style = "#ff00ff"
+format = "[$symbol $version]($style) "
+
+[golang]
+symbol = "⟐go"
+style = "#00ffff"
+format = "[$symbol $version]($style) "
+
+[java]
+symbol = "⟐jv"
+style = "#ff0055"
+format = "[$symbol $version]($style) "
+
+[bun]
+symbol = "⟐bn"
+style = "#ffff00"
+format = "[$symbol $version]($style) "
+
+[deno]
+symbol = "⟐dn"
+style = "#00ffff"
+format = "[$symbol $version]($style) "
+
+[docker_context]
+symbol = "▣"
+style = "#00ffff"
+format = "[$symbol $context]($style) "
+only_with_files = true
+
+[aws]
+symbol = "◈aws"
+style = "#ffff00"
+format = "[$symbol $profile]($style) "
+
+[gcloud]
+symbol = "◈gcp"
+style = "#00ffff"
+format = "[$symbol $project]($style) "
