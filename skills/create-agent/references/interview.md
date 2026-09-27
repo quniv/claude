@@ -1,41 +1,53 @@
-# Interview questions
+# Agent interview
 
-Ask one to three at a time. Ask only what you cannot already answer.
+Use this question bank progressively. Never ask all questions at once, and never
+repeat answers already present in the conversation or workspace.
 
-## Mission and boundary
+## Required decisions
 
-- In one sentence, what does this agent own?
-- Name a task it should refuse and hand back. Why that one?
-- When should the parent session do the work itself instead of delegating?
-- Is there an existing agent or skill this overlaps with?
+1. What is the agent's name?
+2. What position or role does it represent?
+3. What outcome is it accountable for?
+4. What are two or three representative tasks it should own?
+5. What is one near-miss task that belongs to another agent?
+6. What evidence proves its work is complete?
 
-## Real work
+## Role and boundaries
 
-- Describe the last time you did this task. What did it involve?
-- What does the agent need to read before it can start?
-- Which judgement calls should it make alone, and which must come back to you?
-- What does it get wrong if nobody constrains it?
+- Which decisions may the agent make independently?
+- Which actions require confirmation or escalation?
+- Which systems, repositories, environments, or data may it access?
+- Is it advisory, read-only, implementation-capable, or operational?
+- Which destructive, production, financial, privacy, or security actions are
+  prohibited or approval-gated?
 
-## Access
+## Workflow and collaboration
 
-- Which tools does it need — read-only, or does it write, run, or install?
-- Anything destructive or outward-facing: pushes, deploys, deletes, messages?
-- Should it be able to spawn further agents?
-- Does it need credentials or network access?
+- What inputs will it normally receive?
+- What steps or sources of truth must it use?
+- Which agents or people hand work to it, and where does it hand work next?
+- Should it delegate independent subtasks? If so, which kinds?
+- What should it do when requirements are ambiguous or required access is absent?
 
-## Output
+## Outputs and communication
 
-- What does it hand back — a report, a diff, a file, a decision?
-- What must always be in that hand-off, even when everything went fine?
-- How would you tell a good run from a bad one?
+- What artifacts should it produce?
+- What output format, level of detail, and language should it use?
+- Should it lead with findings, commands, a decision, or an implementation?
+- What facts must always be cited or supported by live evidence?
 
-## Model and cost
+## Runtime options
 
-- Is this latency-sensitive, or does it deserve more reasoning?
-- Will it run often enough that model choice matters?
-- Any reason not to inherit the parent's settings?
+Ask these only when the role needs an override rather than inherited defaults:
 
-## Scope pressure
+- Does the agent need a specific model or reasoning effort?
+- Should its sandbox be read-only or workspace-write?
+- Does it require specific MCP servers or tool dependencies?
+- Would a small set of UI nickname candidates be useful?
 
-- Is this one role, or two wearing one name?
-- If it could only do one thing, which?
+## Completion test
+
+Before drafting, be able to finish this sentence without vague language:
+
+> Delegate to this agent when ___; it owns ___, must not ___, and is complete
+> when ___.

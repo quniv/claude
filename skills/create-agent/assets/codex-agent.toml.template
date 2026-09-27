@@ -1,0 +1,8 @@
+name = "[agent-name]"
+description = "[What the agent owns and when Codex should delegate to it.]"
+developer_instructions = """
+Before starting work, read agents/[agent-name]/INSTRUCTIONS.md completely and
+follow it as the canonical role definition. Use only the skills linked from
+agents/[agent-name]/skills unless the parent task explicitly supplies another
+skill. Preserve parent-session settings unless this adapter overrides them.
+"""

@@ -14,17 +14,16 @@ prompt — all on a shared cyberpunk-neon palette (magenta `#ff00ff`, cyan
 
 ## Install
 
-Same symlink idiom as the rest of the repo — `ln -s` refuses to clobber, so back
-up any existing file first and re-run. Run this from the directory **containing**
-your clone, matching the root [README](../README.md):
+`ln -s` refuses to clobber, so back up any existing file first and re-run.
+Paths assume the clone lives at `~/claude`, matching the root [README](../README.md):
 
 ```bash
 mkdir -p ~/.config/ghostty
 
-ln -s "$(pwd)/claude-skills/terminal/zshrc"          ~/.zshrc
-ln -s "$(pwd)/claude-skills/terminal/zprofile"       ~/.zprofile
-ln -s "$(pwd)/claude-skills/terminal/starship.toml"  ~/.config/starship.toml
-ln -s "$(pwd)/claude-skills/terminal/ghostty/config" ~/.config/ghostty/config
+ln -s ~/claude/terminal/zshrc          ~/.zshrc
+ln -s ~/claude/terminal/zprofile       ~/.zprofile
+ln -s ~/claude/terminal/starship.toml  ~/.config/starship.toml
+ln -s ~/claude/terminal/ghostty/config ~/.config/ghostty/config
 ```
 
 Then open a new terminal (or `source ~/.zshrc`).

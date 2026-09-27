@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terraform boilerplate"
+  short_description: "Build, extend or adopt AWS infra in the Terraform boilerplate"
+  default_prompt: "Use $terraform to adopt an existing EC2 host into envs/stg."

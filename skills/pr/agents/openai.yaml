@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR"
+  short_description: "Create and push a branch with current changes"
+  default_prompt: "Use $pr to commit all current changes on a new branch and push after confirmation."

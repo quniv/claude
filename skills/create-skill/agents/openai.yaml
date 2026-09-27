@@ -1,4 +1,4 @@
 interface:
   display_name: "Create Skill"
-  short_description: "Build a skill for any coding agent"
-  default_prompt: "Use $create-skill to turn a repeated workflow into a skill for Claude Code and Codex."
+  short_description: "Create validated workspace skills"
+  default_prompt: "Use $create-skill to design and create a new workspace-local skill."

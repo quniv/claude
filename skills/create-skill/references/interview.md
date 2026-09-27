@@ -1,49 +1,54 @@
-# Interview questions
+# Skill interview
 
-Ask one to three at a time. Ask only what you cannot already answer. Stop as
-soon as the boundary is sharp enough that a different agent would not guess
-differently.
+Use this question bank progressively. Ask one to three high-value questions at a
+time and do not repeat facts already supplied or discoverable in the workspace.
 
-## Triggering
+## Required decisions
 
-- Give me two requests, in your own words, that should invoke this skill.
-- Give me one that feels close but must **not** invoke it. What separates them?
-- Should it fire on its own when the description matches, or only when invoked
-  explicitly?
-- Is there an existing skill or command a user might reach for instead?
+1. What is the proposed skill name?
+2. What are two realistic requests that should trigger it?
+3. What is one similar request that should not trigger it?
+4. What output or changed artifact should each successful run produce?
+5. What evidence proves the workflow completed correctly?
 
-## Workflow
+## Inputs and workflow
 
-- Walk me through the last time you did this by hand. What did you actually do?
-- Which step do you or the agent get wrong most often?
-- What is the source of truth — a file, a command's output, an API, a person?
-- Which steps are strictly ordered, and which can happen in any order?
+- What files, data, arguments, or conversation context will it receive?
+- Which sources of truth must it inspect before acting?
+- What sequence is essential, and where may the agent exercise judgment?
+- Which defaults should it choose without presenting a menu?
+- Which tools, CLIs, libraries, APIs, or MCP servers should it use?
+- What should happen when required input, access, or tooling is missing?
 
-## Inputs and outputs
+## Scope and safety
 
-- What must exist before this can start? What should happen when it does not?
-- What is the finished artifact — a file, a commit, a report, a changed system?
-- How do you know it worked? What would you check?
-- What should never be produced or touched?
+- Is the skill advisory, read-only, mutating, or operational?
+- Which actions are destructive, production-facing, security-sensitive, private,
+  expensive, or approval-gated?
+- What work belongs to an adjacent skill instead?
+- Must compatibility, historical behavior, formatting, or existing user changes
+  be preserved?
 
-## Tools and permissions
+## Reusable contents
 
-- Which commands or tools does this need?
-- Anything destructive, irreversible, or outward-facing — writes to a shared
-  system, pushes, deletes, sends?
-- What needs explicit approval every single time?
-- Any credentials or network access involved?
+- Does the workflow repeatedly reinvent deterministic logic that merits a tested
+  script?
+- Is there detailed domain knowledge that should live in a conditional reference?
+- Are there templates, schemas, icons, boilerplate, or other output assets to
+  bundle?
+- Which examples clarify behavior without becoming generic documentation?
 
-## Failure
+## Delivery and evaluation
 
-- What are the realistic failure modes?
-- On failure, should it stop, retry, or fall back — and to what?
-- What must be reported even when everything succeeds?
+- Who will invoke the skill and from which workspace or client?
+- Should implicit invocation be allowed, or only explicit `$skill-name` use?
+- Which output format and communication style are required?
+- What valid, invalid, edge-case, should-trigger, and should-not-trigger cases
+  should be tested?
 
-## Scope pressure
+## Completion test
 
-Ask these when the skill is growing past one coherent workflow:
+Before drafting, be able to finish this sentence precisely:
 
-- Is this one skill, or two that share a name?
-- Which part is the piece you actually repeat?
-- What would you drop if you could only keep half of it?
+> Use this skill when ___ to produce ___ by following ___; do not use it for ___,
+> and consider it complete only when ___.

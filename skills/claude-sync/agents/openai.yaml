@@ -1,0 +1,4 @@
+interface:
+  display_name: "Claude Sync"
+  short_description: "Sync ~/.claude config with the quniv/claude repo"
+  default_prompt: "Use $claude-sync to publish my latest CLAUDE.md changes to the quniv/claude repo."
