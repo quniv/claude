@@ -1,0 +1,12 @@
+# repo path<TAB>path under $HOME. Read by skills/claude-sync/scripts/sync.sh.
+claude/CLAUDE.md	.claude/CLAUDE.md
+claude/commands	.claude/commands
+claude/statusline-command.sh	.claude/statusline-command.sh
+skills/claude-sync	.claude/skills/claude-sync
+skills/savework	.claude/skills/savework
+skills/pr	.claude/skills/pr
+skills/push	.claude/skills/push
+skills/gitmain	.claude/skills/gitmain
+skills/create-skill	.claude/skills/create-skill
+skills/create-agent	.claude/skills/create-agent
+skills/terraform	.claude/skills/terraform

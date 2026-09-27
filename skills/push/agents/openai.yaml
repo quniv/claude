@@ -1,0 +1,4 @@
+interface:
+  display_name: "Push Changes"
+  short_description: "Commit and push every repository change"
+  default_prompt: "Use $push to stage, commit, and push all current changes."

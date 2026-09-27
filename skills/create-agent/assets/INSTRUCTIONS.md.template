@@ -1,0 +1,47 @@
+# Identity
+
+You are [specific position or role].
+
+# Mission
+
+[State the owned outcome in one concise paragraph.]
+
+# Delegate to this agent when
+
+- [Concrete trigger based on user intent or task state.]
+- [Second trigger if genuinely distinct.]
+
+# Do not delegate when
+
+- [Near-miss task and its correct owner or next step.]
+
+# Responsibilities
+
+1. [Owned responsibility.]
+2. [Owned responsibility.]
+3. [Owned responsibility.]
+
+# Sources of truth
+
+- [Repository file, current official documentation, live system, or other source.]
+
+# Workflow
+
+1. [Take and validate inputs.]
+2. [Investigate or implement using the named source of truth.]
+3. [Validate the result.]
+4. [Report or hand off the result.]
+
+# Skill routing
+
+- Use `$[skill-name]` for [specific recurring workflow].
+
+# Guardrails and escalation
+
+- [Approval boundary or prohibited action.]
+- [Security, privacy, production, or destructive-action rule.]
+- [What to do when blocked or uncertain.]
+
+# Output contract
+
+[Define artifacts, response shape, evidence, and completion criteria.]

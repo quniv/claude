@@ -1,6 +1,6 @@
 #!/bin/bash
 # Claude Code Status Line — robbyrussell theme style
-# Displays: ➜  <dir> git:(branch) ✗  [model·effort]  [ctx%]  [5h%]  session-context
+# Displays: ➜  <dir> git:(branch) ✗  [ctx%]  [5h%]  session-context
 
 # ANSI color codes using $'...' syntax for proper interpretation
 RST=$'\e[0m'
@@ -34,17 +34,29 @@ else
     git_part=""
 fi
 
-# Model + reasoning effort — effort.level is absent when the model doesn't support it
+# Model name and reasoning effort level
 model=$(echo "$input" | jq -r ".model.display_name // empty")
 effort=$(echo "$input" | jq -r ".effort.level // empty")
 if [ -n "$model" ]; then
-    effort_part=""
     if [ -n "$effort" ]; then
-        effort_part="${GRAY}·${BOLD_CYAN}${effort}"
+        model_display=" ${GRAY}[${BOLD_CYAN}${model}${GRAY}:${LIGHT_MAGENTA}${effort}${GRAY}]${RST}"
+    else
+        model_display=" ${GRAY}[${BOLD_CYAN}${model}${GRAY}]${RST}"
     fi
-    model_display=" ${GRAY}[${LIGHT_MAGENTA}${model}${effort_part}${GRAY}]${RST}"
 else
     model_display=""
+fi
+
+# AWS profile (from environment Claude Code was launched with)
+aws_profile="${AWS_PROFILE:-${AWS_DEFAULT_PROFILE:-}}"
+# Fall back to "default" only if a real default section exists (matches starship).
+if [ -z "$aws_profile" ] && grep -qsE '^\[(profile )?default\]' "$HOME/.aws/config" "$HOME/.aws/credentials"; then
+    aws_profile="default"
+fi
+if [ -n "$aws_profile" ]; then
+    aws_display=" ${GRAY}[${LIGHT_MAGENTA}☁️ ${BOLD_CYAN}${aws_profile}${GRAY}]${RST}"
+else
+    aws_display=""
 fi
 
 # Context window usage
@@ -89,12 +101,13 @@ else
     arrow="${BOLD_GREEN}➜${RST}"
 fi
 
-# Output: ➜  dir git:(branch) ✗  [model·effort]  [ctx%]  [5h%]  session-context
-printf "%s  %s%s%s%s%s%s\n" \
+# Output: ➜  dir git:(branch) ✗  [model:effort]  [aws]  [ctx%]  [5h%]  session-context
+printf "%s  %s%s%s%s%s%s%s\n" \
     "$arrow" \
     "${CYAN}${dir_name}${RST}" \
     "$git_part" \
     "$model_display" \
+    "$aws_display" \
     "$ctx_display" \
     "$five_display" \
     "$context_display"
