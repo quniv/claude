@@ -2,10 +2,27 @@
 
 Overrides every other instruction, skill and permission mode.
 
-- Infra, cloud and K8s (AWS, GCP, Azure, kubectl, helm, terraform, etc.): only call them with a **read-only** profile, user, role or kube context.
+- This applies to every server and every cloud I touch: cloud accounts (AWS, GCP, Azure), K8s (kubectl, helm), terraform, SSH hosts, on-prem machines, CI runners, databases, brokers and monitoring tools.
+- Only connect with a **read-only** identity: a profile, IAM user or role, kube context, SSH user, database user or API token that cannot write.
+- Only run read commands. On a server, that means commands such as `ls`, `cat`, `ps`, `df`, `journalctl`, `systemctl status` and `SELECT`. Never restart, install, edit, deploy, migrate or write data.
 - **Never change anything there myself.** Humans run every change. I suggest the exact commands; they run them.
-- No read-only identity for the target yet? Stop and ask the human to create one (profile, IAM user/role, kube context). Never fall back to a write-capable one, even if it is already configured.
+- No read-only identity for the target yet? Stop and ask the human to create one. Never fall back to a write-capable one, such as a sudo user, an admin profile or a root database user, even if it is already configured.
 - `terraform plan` only, under the read-only identity, with `-lock=false`. Never `apply`, `import`, `state rm/mv` or `destroy`.
+
+# My role: DevSecOps engineer
+
+- I am a DevSecOps engineer. Read every project through security, cost and operations eyes.
+- While working on a project, tell me about security, cost or optimization improvements you notice, even when they are outside the current task.
+  - Security examples: open ports, broad IAM, leaked or plaintext secrets, missing encryption, MFA, logging or backups.
+  - Cost examples: oversized or idle resources, missing budgets, cheaper storage or pricing options.
+  - Optimization examples: slow CI, fragile deploys, missing monitoring or alerts.
+- Keep each suggestion short: the finding, why it matters and the fix. Put the highest risk or the biggest saving first.
+- Only suggest. Do not change anything outside the task without asking. The infrastructure access rules above still apply.
+- When I accept a suggestion, record it as a TODO with the `todoist-work` skill.
+
+# Cost alerting
+
+- Terraform projects: follow the `budget-alert` skill. Check for daily and monthly budget alerts; if missing, remind me once per session and ask me before setting them up.
 
 # Deletion
 
@@ -15,6 +32,11 @@ Overrides every other instruction, skill and permission mode.
 
 - When writing documents, prefer diagrams heavily over text — diagrams should carry roughly 10x the weight of prose. Reach for a diagram before writing a paragraph.
 - Keep the writing itself clean and simple: short sentences, plain approach, no fluff.
+- A README opens with a quickstart: the few commands to get going, almost no prose. Explanations, internals, setup details and edge cases come after, further down.
+- Never use `·` (middle dot), anywhere: docs, tables, diagrams, commit messages, chat. Separate items with bullet points, new lines, commas or table columns.
+- Write formal, professional, complete sentences: an explicit subject and verb, no fragments or shorthand, no dash-inserted asides (`—`). Split a long thought into two sentences instead.
+  - Avoid: "Everything that holds state — the waiting line and the database — sits on the same machine as the AI."
+  - Write: "The waiting line and the database store all of the system's state. Both run on the same machine as the AI."
 
 # Code comments
 
@@ -29,15 +51,34 @@ Overrides every other instruction, skill and permission mode.
 - Write it as bullet points, not paragraphs — easier for reviewers to scan.
 - Detail belongs in commit messages, code, or a README — not the PR body.
 
+# Project tooling
+
+- Project has no `justfile`? Suggest adding one, once per session, with recipes for its everyday commands (install, dev, build, test, lint). Ask before adding it.
+
 # Session recaps
 
-`.history/` in the project root holds recaps of past sessions, named `{epoch}_{slug}.md`.
+`.history/` folders hold recaps of past sessions, named `{epoch}_{slug}.md`. They can exist at the project root and in nested subfolders.
 
-## Reading — before starting any working session
+## Reading at the start of every new session
 
-- List the filenames first (`ls .history/`). The slugs give the overview, the epoch prefix orders them. That alone is usually enough.
-- **Load filenames only.** Do not read the bodies by default.
-- Read a recap's body only when its name looks relevant to the work at hand, or when the newest few are needed to get oriented after a long gap.
+- Before any other work, find every `.history/` folder under the working directory, including nested ones.
+- In each folder, read the bodies of the 5 newest recaps. The highest epoch prefix is the newest. Skip the folder's `CLAUDE.md`.
+- Use this command to list them, then read every listed file:
+
+  ```sh
+  find . \( -name node_modules -o -name .git -o -name .venv -o -name .cache -o -name .local -o -name .npm -o -name .cargo -o -name .rustup \) -prune \
+    -o -type d -name .history -print 2>/dev/null |
+    while read -r d; do ls "$d" | grep -E '^[0-9]+_.+\.md$' | sort -rn | head -5 | sed "s|^|$d/|"; done
+  ```
+
+- Read older recaps only when their names look relevant to the work at hand.
+- For context older than the 5 newest recaps, read the folder's monthly recap first. Monthly recaps are named `mmmYYYY.md`, for example `mar2026.md`.
+
+## Monthly recaps
+
+- The `~/opt/history-monthly` systemd user timer runs on the 1st of each month. It writes one `mmmYYYY.md` per finished month in every `.history/` folder, using headless Opus 5.5 at xhigh effort.
+- The session recaps stay in place. Monthly recaps are permanent, so never edit or delete them.
+- `.history/` is ignored by git through `~/.config/git/ignore`. Never commit it.
 
 ## Writing
 

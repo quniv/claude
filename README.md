@@ -92,7 +92,7 @@ one for Codex as well.
 | `pr` | Commits all current changes onto a new branch from `main`/`develop` and pushes it after confirmation. |
 | `push` | Commits every current change and pushes the current branch, no questions asked. |
 | `savework` | Writes a short session recap to `.history/` in the project root, so the next session gets oriented without re-deriving context. |
-| `terraform` | Scaffolds and extends an AWS Terraform repo with `shared/`, `envs/` and `modules/` stacks, and adopts existing resources with import blocks. |
+| `terraform` | House rules for Terraform code: one file per AWS service, naming, safe renames and imports, and plan verification. |
 
 `savework` is most useful paired with the `claude/CLAUDE.md` rule that tells
 Claude to run it unprompted after something lands.
@@ -100,8 +100,9 @@ Claude to run it unprompted after something lands.
 ## Global instructions
 
 `claude/CLAUDE.md` is the always-on preamble for every project: read-only access
-to infrastructure, confirm before deleting anything, prefer diagrams over prose,
-short code comments and PR descriptions, and recap finished work to `.history/`.
+to every server and cloud, confirm before deleting anything, flag security, cost
+and optimization findings, prefer diagrams over prose, short code comments and PR
+descriptions, and read and write session recaps in `.history/`.
 Per-project `CLAUDE.md` files stack on top of it rather than replacing it.
 
 ## Notes

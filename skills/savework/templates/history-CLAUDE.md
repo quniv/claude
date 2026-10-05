@@ -15,3 +15,10 @@ Skim filenames by epoch prefix (newest = highest number) before deep-diving into
 - **Never include**: secrets, credentials, API keys, tokens, or the contents of any credentials/env folder.
 - One file per work session — don't append to old files, don't edit past recaps.
 - Prefer the `savework` skill to create these files rather than writing them ad hoc, so the format stays consistent.
+- `.history/` is ignored by git through `~/.config/git/ignore`. Never commit it.
+
+## Monthly recaps
+
+- The `~/opt/history-monthly` job writes `mmmYYYY.md` (for example `mar2026.md`) on the 1st of each month. Each file summarizes one finished month.
+- The session recaps stay in place. The monthly file is permanent, so never edit or delete it.
+- For context older than the newest recaps, read the relevant monthly recap first.
