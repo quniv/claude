@@ -1,0 +1,8 @@
+# GNOME Shell extensions from extensions.gnome.org. install.sh installs and enables each one.
+monitor@astraext.github.io                            # Astra Monitor
+clipboard-indicator@tudmotu.com                       # Clipboard Indicator
+notification-timeout@chlumskyvaclav.gmail.com         # Notification Timeout
+display-brightness-ddcutil@themightydeity.github.com  # Brightness control using ddcutil
+caffeine@patapon.info                                 # Caffeine
+claude-usage@dvdstelt.github.io                       # Claude Code Usage Monitor
+space-bar@luchrioh                                    # Space Bar
