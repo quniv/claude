@@ -9,6 +9,8 @@ Custom slash commands, skills, and tooling for [Claude Code](https://claude.ai/c
 - **Status line** (`claude/statusline-command.sh`) for the Claude Code footer.
 - **Terminal setup** (`terminal/`) is the Ghostty + zsh + Starship environment
   this all runs in — see [`terminal/README.md`](terminal/README.md).
+- **GNOME Shell setup** (`gnome/`) installs the desktop extensions and their
+  settings. See [`gnome/README.md`](gnome/README.md).
 
 ```text
 repo                            ~/.claude (symlinks, per claude/links.tsv)
@@ -65,6 +67,15 @@ ln -s ~/claude/terminal/zshrc          ~/.zshrc
 ln -s ~/claude/terminal/zprofile       ~/.zprofile
 ln -s ~/claude/terminal/starship.toml  ~/.config/starship.toml
 ln -s ~/claude/terminal/ghostty/config ~/.config/ghostty/config
+```
+
+### GNOME Shell setup
+
+`gnome/` installs the GNOME Shell extensions and loads their settings. Read
+[`gnome/README.md`](gnome/README.md) for the list and the requirements.
+
+```bash
+~/claude/gnome/install.sh   # then log out and back in
 ```
 
 ## Commands
