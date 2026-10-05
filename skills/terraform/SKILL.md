@@ -1,66 +1,61 @@
 ---
 name: terraform
-description: Works in an AWS Terraform boilerplate built from directory stacks — shared/ for account-wide resources, per-environment envs/ root modules, and reusable modules/. It has one S3 backend with native lockfile locking, and a justfile that runs every command. Use it to scaffold a new infrastructure repo from this boilerplate, to add resources, modules or environments to a repo with this layout, or to adopt existing hand-built AWS resources into shared/ or envs/ with import blocks, from one host to every IAM user in the account, so the first plan changes nothing. Not for general Terraform questions, other clouds, provider development, HCP Terraform Stacks, or repos with a different layout unless asked to migrate them to it.
+description: House rules for Terraform code — file layout by AWS service, naming, renames and verification. Use whenever writing, reviewing, refactoring, importing or adding .tf files or Terraform modules, and before placing a new resource in a stack.
 ---
 
-# Terraform boilerplate
+# Terraform house rules
 
-Work the way this boilerplate works, so a human reviewer sees small, predictable
-plans. Identify the mode, read only its reference, and keep the rules below on
-every run.
+## File layout: one file per AWS service
 
-## Modes
+Every stack directory uses the same file names. A resource goes in the file of the
+service it belongs to, and a module call goes in the file of the service it creates.
 
-| Situation | Do |
+| File | Holds |
 |---|---|
-| No repo yet, or an empty one | Scaffold: run `scripts/scaffold.sh` (below) |
-| Repo has `shared/`, `envs/`, `modules/`, `justfile` | Extend: read [references/conventions.md](references/conventions.md) |
-| Resources already exist in AWS and must come under Terraform | Adopt: read [references/adoption.md](references/adoption.md) (and conventions.md for placement) |
+| `versions.tf` | `terraform {}`, backend, providers |
+| `main.tf` | stack-wide locals only (env, account, region, shared shorthands) |
+| `outputs.tf` | outputs |
+| `imports.tf` | import blocks; temporary, delete once applied and re-planned clean |
+| `vpc.tf` | VPC, subnets, IGW, NAT, route tables, routes, associations, VPC endpoints, flow logs, network modules |
+| `ec2.tf` | instances and host modules, security groups and their rules/modules, Elastic IPs, key pairs, launch templates, Auto Scaling groups/policies, **load balancers, target groups, listeners, listener rules/certificates**, EBS account settings |
+| `rds.tf` | DB instances and DB modules, DB subnet groups, DB parameter groups |
+| `<service>.tf` | everything else, one file per service: `iam.tf`, `s3.tf`, `lambda.tf`, `cloudwatch.tf` (log groups, metric filters, alarms, dashboards), `eventbridge.tf`, `sns.tf`, `ssm.tf`, `secretsmanager.tf`, `route53.tf`, `acm.tf`, `cloudfront.tf`, `waf.tf`, `efs.tf`, `docdb.tf`, `dms.tf`, `guardduty.tf`, `securityhub.tf`, `inspector.tf`, `config.tf`, `cloudtrail.tf`, `accessanalyzer.tf`, `budgets.tf` |
 
-A repo with a different layout is not this boilerplate: follow its own
-conventions unless asked to migrate it.
+- One file per service. Never split a service into topic files, and never name a
+  file by theme (`edge.tf`, `observability.tf`, `network-extra.tf`) or by project (`chirpstack.tf`).
+- Locals and data sources live with their main consumer (`aws_iam_policy_document` → `iam.tf`).
+- Other regions go in the same service file, under a `# --- us-east-1 ---` section,
+  after the stack's home region.
+- Each file opens with a one-line header naming what it holds.
 
-## Rules for every run
+## Naming
 
-- **The human runs `plan` and `apply`.** Never apply. Run a plan only when asked,
-  and then only with read-only credentials (`just plan-ro`).
-- **Read AWS with read-only credentials only.** Never read or record secret
-  values, instance user_data, private keys or state contents into the repo or
-  the chat.
-- **Everything through `just`.** Run `just check` (fmt + offline validate) before
-  handing over.
-- **Place by ownership**: one environment → `envs/<env>/`; account-wide →
-  `shared/`; repeated pattern → `modules/`. Resources another tool owns
-  (CloudFormation/CDK, AWS services) are referenced by ID, never imported.
-- **Modules stay hardened by default.** A new variable defaults to the existing
-  behaviour; after changing a module, every stack using it must still plan clean.
-- **Adoption writes nothing to AWS.** Match live values exactly, including typos;
-  never "fix" a resource while importing it. Improvements are separate changes.
-- **Import blocks leave only after their own apply.** Removing one earlier makes
-  the plan create a duplicate of a running resource.
-- Comments: one or two lines, only the non-obvious why. No secrets, `*.tfvars`
-  or state in git.
+- Never use "adopt"/"adopted"/"adoption" in file names, provider aliases,
+  resource/module/local names or comments. Name what a thing *is*, not how it got
+  into Terraform. Say "import"/"imported" when the history matters.
+- Resource names are short and specific (`aws_lb.prod`, `aws_subnet.prod["private_1"]`);
+  don't repeat the type (`aws_s3_bucket.bucket`, `aws_guardduty_detector.guardduty`).
+- Provider aliases describe the difference: region (`use1`, `apse1`) or behaviour (`untagged`).
 
-## Scaffold
+## Changing code safely
 
-```bash
-scripts/scaffold.sh <dest> --prefix acme --account-id 123456789012 \
-  --region eu-west-1 --github-org acme-inc --github-repo acme-terraform \
-  [--aws-profile acme]
-```
+| Change | Rule |
+|---|---|
+| Move a block to another file | Free; addresses don't depend on file names. |
+| Rename a resource or module | Add a `moved {}` block; remove it after the apply that records the move. |
+| Change a resource's provider alias | Same provider type and region only; confirm with a plan. |
+| Import | Write code + import block, plan until only imports remain, apply, re-plan, then delete the import block. |
 
-It copies [assets/template/](assets/template/) (empty shared/ and modules/,
-envs/stg, envs/prod, justfile, inventory script), fills every `__TOKEN__`, and
-refuses a non-empty destination or a leftover token. Then run `just check` in
-the new repo and hand the human the bootstrap steps from its README.
+Every refactor ends with `terraform fmt -recursive`, `validate`, and a plan per
+stack showing `0 to add, 0 to change, 0 to destroy` (moves allowed).
 
-## Handover
+## Comments
 
-End every change with:
+One or two lines, only for a non-obvious why, a trap, or a recorded finding
+("recorded, not endorsed"). No narration of what the code plainly does.
 
-1. Files changed and why, one line each.
-2. Per stack, the exact plan to expect, e.g.
-   `envs/stg: 12 to import, 0 to add, 0 to change, 0 to destroy`.
-3. The commands the human runs, in order.
-4. Anything found but deliberately not changed (security findings, drift,
-   resources owned elsewhere).
+## Cost alerting
+
+Every Terraform project needs a daily and a monthly budget alert. Follow the
+`budget-alert` skill: check for one, remind once per session if missing, and ask
+the user before setting it up.

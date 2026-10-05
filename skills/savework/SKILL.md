@@ -25,6 +25,7 @@ Skip it for pure Q&A, read-only investigation with no lasting conclusion, or tri
 2. **Ensure `.history/` exists.**
    - Create `<project-root>/.history/` if it doesn't exist.
    - If `<project-root>/.history/CLAUDE.md` doesn't exist, create it by copying this skill's `templates/history-CLAUDE.md` verbatim.
+   - In a git repo, `git check-ignore -q .history/` must succeed. If it fails, append `.history/` to `~/.config/git/ignore`. Never commit `.history/`.
 
 3. **Build the filename** — pattern `{epoch_seconds}_{title}.md`:
    - Get the epoch: `date +%s`.
@@ -38,6 +39,12 @@ Skip it for pure Q&A, read-only investigation with no lasting conclusion, or tri
    - No headers, no bullet ceremony, no restating what's already obvious from the code, git log, or diff.
 
 5. **Write the file** to `<project-root>/.history/{epoch}_{title}.md`. Confirm the path back to the user in one line.
+
+## Monthly recaps
+
+- The `~/opt/history-monthly` job runs on the 1st of each month. It writes `mmmYYYY.md` (for example `mar2026.md`) for each finished month.
+- The session recaps stay in place. The monthly file is permanent.
+- Never write, edit or delete a monthly recap from this skill.
 
 ## Example
 
