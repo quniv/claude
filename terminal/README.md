@@ -11,6 +11,7 @@ prompt — all on a shared cyberpunk-neon palette (magenta `#ff00ff`, cyan
 | `zprofile` | `~/.zprofile` | login-shell PATH for `pipx` binaries |
 | `starship.toml` | `~/.config/starship.toml` | two-line neon prompt — os, dir, git, k8s, language versions, clock |
 | `ghostty/config` | `~/.config/ghostty/config` | fonts, colors, splits/tabs keybinds, shell integration |
+| `gnome-shortcut.sh` | GNOME dconf | binds `Alt+T` to open Ghostty |
 
 ## Install
 
@@ -27,6 +28,15 @@ ln -s ~/claude/terminal/ghostty/config ~/.config/ghostty/config
 ```
 
 Then open a new terminal (or `source ~/.zshrc`).
+
+On GNOME, bind `Alt+T` to open Ghostty:
+
+```bash
+~/claude/terminal/gnome-shortcut.sh            # or pass another key, e.g. '<Super>Return'
+```
+
+The script adds its own custom shortcut and keeps the others. It changes
+nothing when the key is already bound.
 
 ## Requirements
 
