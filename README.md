@@ -51,7 +51,9 @@ Point `statusLine` in `~/.claude/settings.json` at the linked script:
 ```
 
 It shows cwd, git branch/dirty state, model + reasoning effort, AWS profile,
-context window usage, 5-hour rate limit usage, and a session context summary.
+context window usage, 5-hour rate limit usage, CPU/RAM/disk usage, and a session
+context summary. The system usage segment needs Linux `/proc`. Each value turns
+yellow at 75% and red at 90%.
 
 ### Terminal setup
 
