@@ -30,7 +30,7 @@ Overrides every other instruction, skill and permission mode.
 
 # Documentation style
 
-- When writing documents, prefer diagrams heavily over text — diagrams should carry roughly 10x the weight of prose. Reach for a diagram before writing a paragraph.
+- Add a diagram only when it is needed, such as for a flow, an architecture or a sequence that prose explains poorly. Most documents need none. A document normally has at most one diagram.
 - Keep the writing itself clean and simple: short sentences, plain approach, no fluff.
 - A README opens with a quickstart: the few commands to get going, almost no prose. Explanations, internals, setup details and edge cases come after, further down.
 - Never use `·` (middle dot), anywhere: docs, tables, diagrams, commit messages, chat. Separate items with bullet points, new lines, commas or table columns.

@@ -114,8 +114,8 @@ Claude to run it unprompted after something lands.
 
 `claude/CLAUDE.md` is the always-on preamble for every project: read-only access
 to every server and cloud, confirm before deleting anything, flag security, cost
-and optimization findings, prefer diagrams over prose, short code comments and PR
-descriptions, and read and write session recaps in `.history/`.
+and optimization findings, at most one diagram per doc and only when needed, short
+code comments and PR descriptions, and read and write session recaps in `.history/`.
 Per-project `CLAUDE.md` files stack on top of it rather than replacing it.
 
 ## Notes
