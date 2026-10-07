@@ -51,7 +51,9 @@ Point `statusLine` in `~/.claude/settings.json` at the linked script:
 ```
 
 It shows cwd, git branch/dirty state, model + reasoning effort, AWS profile,
-context window usage, 5-hour rate limit usage, and a session context summary.
+context window usage, 5-hour rate limit usage, CPU/RAM/disk usage, and a session
+context summary. The system usage segment needs Linux `/proc`. Each value turns
+yellow at 75% and red at 90%.
 
 ### Terminal setup
 
@@ -112,8 +114,8 @@ Claude to run it unprompted after something lands.
 
 `claude/CLAUDE.md` is the always-on preamble for every project: read-only access
 to every server and cloud, confirm before deleting anything, flag security, cost
-and optimization findings, prefer diagrams over prose, short code comments and PR
-descriptions, and read and write session recaps in `.history/`.
+and optimization findings, at most one diagram per doc and only when needed, short
+code comments and PR descriptions, and read and write session recaps in `.history/`.
 Per-project `CLAUDE.md` files stack on top of it rather than replacing it.
 
 ## Notes
