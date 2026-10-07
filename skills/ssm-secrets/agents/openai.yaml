@@ -1,0 +1,4 @@
+interface:
+  display_name: "SSM Secrets"
+  short_description: ".env secrets in AWS SSM, synced with just recipes"
+  default_prompt: "Use $ssm-secrets to set up .env secrets for this project in AWS SSM with just recipes."
